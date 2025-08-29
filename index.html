@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manshi Rajiv | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+      line-height: 1.6;
+    }
+
+    header, footer {
+      background: #1e293b;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+    }
+
+    nav {
+      margin-top: 1rem;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .section {
+      padding: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .todo input[type="text"] {
+      padding: 0.5rem;
+      width: 70%;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 1rem;
+    }
+
+    .todo button {
+      padding: 0.5rem 1rem;
+      background: #38bdf8;
+      border: none;
+      border-radius: 6px;
+      color: #0f172a;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .todo ul {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .todo li {
+      margin-bottom: 0.75rem;
+      background: #334155;
+      padding: 0.5rem;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .product-card {
+      background: #1e293b;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid #334155;
+    }
+
+    .filters select {
+      padding: 0.5rem;
+      margin-right: 1rem;
+      border-radius: 6px;
+      background: #334155;
+      color: #f1f5f9;
+      border: none;
+    }
+
+    @media (max-width: 600px) {
+      nav a {
+        display: block;
+        margin: 0.5rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>💼 Manshi Rajiv Portfolio</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="section" id="about">
+    <div class="card">
+      <h2>About Me</h2>
+      <p>I’m a passionate developer skilled in HTML, CSS, JavaScript and modern UI/UX design. I enjoy building interactive and responsive web apps that solve real-world problems.</p>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <h2>📌 Projects</h2>
+    <div class="grid">
+      <div class="card todo">
+        <h3>📝 To-Do List with Local Storage</h3>
+        <input type="text" id="todoInput" placeholder="Add a task...">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="todoList"></ul>
+      </div>
+
+      <div class="card">
+        <h3>🛒 Product Filter & Sort</h3>
+        <div class="filters">
+          <select id="categoryFilter" onchange="filterProducts()">
+            <option value="all">All</option>
+            <option value="tech">Tech</option>
+            <option value="fashion">Fashion</option>
+          </select>
+          <select id="sortOption" onchange="sortProducts()">
+            <option value="rating">Sort by Rating</option>
+            <option value="price">Sort by Price</option>
+          </select>
+        </div>
+        <div id="productContainer" class="grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="card">
+      <h2>📬 Contact</h2>
+      <p>Email me at: <strong>manshi@example.com</strong></p>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Manshi Rajiv | Built with ❤️ using HTML, CSS & JS</p>
+  </footer>
+
+  <script>
+    // To-Do List with Local Storage
+    const todoList = document.getElementById('todoList');
+    const todoInput = document.getElementById('todoInput');
+
+    function loadTasks() {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      todoList.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `${task} <button onclick="removeTask(${index})">❌</button>`;
+        todoList.appendChild(li);
+      });
+    }
+
+    function addTask() {
+      const task = todoInput.value.trim();
+      if (task) {
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        tasks.push(task);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        todoInput.value = '';
+        loadTasks();
+      }
+    }
+
+    function removeTask(index) {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks.splice(index, 1);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      loadTasks();
+    }
+
+    loadTasks();
+
+    // Product Filter & Sort
+    const products = [
+      { name: 'Smartphone', category: 'tech', price: 500, rating: 4.5 },
+      { name: 'Jeans', category: 'fashion', price: 60, rating: 4.0 },
+      { name: 'Laptop', category: 'tech', price: 1200, rating: 4.8 },
+      { name: 'Sneakers', category: 'fashion', price: 80, rating: 4.2 },
+    ];
+
+    function displayProducts(list) {
+      const container = document.getElementById('productContainer');
+      container.innerHTML = '';
+      list.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'product-card';
+        div.innerHTML = `<strong>${p.name}</strong><br>Category: ${p.category}<br>💰 $${p.price} | ⭐ ${p.rating}`;
+        container.appendChild(div);
+      });
+    }
+
+    function filterProducts() {
+      const category = document.getElementById('categoryFilter').value;
+      const filtered = category === 'all' ? products : products.filter(p => p.category === category);
+      displayProducts(filtered);
+    }
+
+    function sortProducts() {
+      const option = document.getElementById('sortOption').value;
+      const sorted = [...products].sort((a, b) => option === 'price' ? a.price - b.price : b.rating - a.rating);
+      displayProducts(sorted);
+    }
+
+    displayProducts(products);
+  </script>
+</body>
+</html>
